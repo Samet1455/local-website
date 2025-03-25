@@ -494,18 +494,504 @@
     </div>
     
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Get debug area element
-            const debugArea = document.getElementById('debug-area');
-            
-            // Function to log debug messages
-            function logDebug(message) {
-                debugArea.textContent = message;
-                debugArea.style.display = 'block';
-                console.error(message);
+    <!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Müzik Dünyası</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(to right, #1A2980, #26D0CE);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        header {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+        }
+        
+        .logo span {
+            color: #1ED760;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+        }
+        
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: #1ED760;
+        }
+        
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        
+        .hero-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+        
+        .hero-content {
+            flex: 1;
+            padding-right: 40px;
+        }
+        
+        .hero-content h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        
+        .hero-content p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .search-container {
+            position: relative;
+            margin-bottom: 40px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 30px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+            transition: background-color 0.3s;
+        }
+        
+        .search-input:focus {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .category-tabs {
+            display: flex;
+            margin-bottom: 30px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+        
+        .category-tab {
+            padding: 10px 20px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            margin-right: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            white-space: nowrap;
+        }
+        
+        .category-tab:hover {
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        
+        .category-tab.active {
+            background-color: #1ED760;
+            color: #000;
+        }
+        
+        .music-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .music-card {
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        
+        .music-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .music-card-image {
+            width: 100%;
+            height: 170px;
+            object-fit: cover;
+        }
+        
+        .music-card-content {
+            padding: 15px;
+        }
+        
+        .music-card h3 {
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        
+        .music-card p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+        
+        .section-title {
+            margin-bottom: 25px;
+            font-size: 24px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: #1ED760;
+        }
+        
+        .player {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(20, 20, 20, 0.9);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            z-index: 100;
+            height: 80px;
+        }
+        
+        .player-song-info {
+            display: flex;
+            align-items: center;
+            width: 25%;
+        }
+        
+        .player-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+        
+        .player-details {
+            flex: 1;
+        }
+        
+        .player-details h4 {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .player-details p {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .player-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50%;
+        }
+        
+        .player-controls button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            margin: 0 10px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: background-color 0.3s;
+        }
+        
+        .player-controls button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .player-controls button.play-pause {
+            font-size: 16px;
+            width: 40px;
+            height: 40px;
+            background-color: #1ED760;
+            color: #000;
+        }
+        
+        .player-controls button.play-pause:hover {
+            background-color: #1bc155;
+        }
+        
+        .player-progress {
+            width: 100%;
+            margin: 0 15px;
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 4px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            cursor: pointer;
+            margin-bottom: 5px;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: #1ED760;
+            border-radius: 2px;
+            width: 0%;
+        }
+        
+        .time {
+            display: flex;
+            justify-content: space-between;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 12px;
+        }
+        
+        .player-volume {
+            display: flex;
+            align-items: center;
+            width: 25%;
+            justify-content: flex-end;
+        }
+        
+        .volume-icon {
+            margin-right: 10px;
+            font-size: 16px;
+        }
+        
+        .volume-slider {
+            width: 100px;
+            height: 4px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .volume-percentage {
+            height: 100%;
+            background-color: #1ED760;
+            border-radius: 2px;
+            width: 70%;
+        }
+        
+        .featured-playlists {
+            margin-bottom: 40px;
+        }
+        
+        .playlist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+        }
+        
+        .playlist-card {
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .playlist-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .playlist-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            object-fit: cover;
+        }
+        
+        .playlist-card h3 {
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        
+        .playlist-card p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-section {
+                flex-direction: column;
+                text-align: center;
             }
-
-            // Modify songs array to use full URLs (replace with your actual audio hosting URL)
+            
+            .hero-content {
+                padding-right: 0;
+                margin-bottom: 30px;
+            }
+            
+            .player {
+                flex-direction: column;
+                height: auto;
+                padding: 15px;
+            }
+            
+            .player-song-info, .player-controls, .player-volume {
+                width: 100%;
+                margin-bottom: 15px;
+            }
+            
+            .player-volume {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">Müzik<span>Dünyası</span></a>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">Ana Sayfa</a></li>
+                   
+                   
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="main-container">
+        <div class="hero-section">
+            <div class="hero-content">
+                <h1>Müziğinizi keşfedin</h1>
+                <p>Milyonlarca şarkıya anında erişin ve ruh halinize uygun müzikleri keşfedin.</p>
+            </div>
+        </div>
+        
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Şarkı, sanatçı veya albüm arayın..." id="search-input">
+        </div>
+        
+        <div class="category-tabs">
+            <div class="category-tab active">Pop</div>
+            <div class="category-tab">Rock</div>
+            <div class="category-tab">Elektronik</div>
+            <div class="category-tab">Hip Hop</div>
+         
+            <div class="category-tab">Jazz</div>
+            
+            
+        </div>
+        
+        <section class="trending">
+            <h2 class="section-title">Popüler Şarkılar</h2>
+            <div class="music-grid" id="music-grid">
+                <!-- Şarkılar JavaScript ile doldurulacak -->
+            </div>
+        </section>
+        
+        
+    </div>
+    
+    <div class="player" id="player">
+        <div class="player-song-info">
+            <img src="/api/placeholder/50/50" alt="şarkı resmi" class="player-image" id="player-image">
+            <div class="player-details">
+                <h4 id="player-title">Şarkı seçilmedi</h4>
+                <p id="player-artist">-</p>
+            </div>
+        </div>
+        
+        <div class="player-controls">
+            <button id="prev">◀◀</button>
+            <button id="play-pause" class="play-pause">▶</button>
+            <button id="next">▶▶</button>
+            
+            <div class="player-progress">
+                <div class="progress-container" id="progress-container">
+                    <div class="progress" id="progress"></div>
+                </div>
+                <div class="time">
+                    <span id="current-time">0:00</span>
+                    <span id="duration">0:00</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="player-volume">
+            <div class="volume-icon">🔊</div>
+            <div class="volume-slider" id="volume-slider">
+                <div class="volume-percentage" id="volume-percentage"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Şarkı listesi - gerçek uygulamada API'den gelecektir
             const songs = [
                 {
                     id: 1,
@@ -513,52 +999,380 @@
                     artist: "Leman Sam",
                     category: "Pop",
                     imageUrl: "/api/placeholder/170/170",
-                    audioUrl: "https://example.com/music/gul-guzeli.mp3" // Replace with actual URL
+                    audioUrl: "Gül Güzeli.mp3"
                 },
-                // ... (other songs remain the same, but update audioUrl)
+                {
+                    id: 2,
+                    title: "Sebastian",
+                    artist: "Hande Yener",
+                    category: "Pop",
+                    imageUrl: "/api/placeholder/170/170",
+                    audioUrl: "Sebastian.mp3"
+                },
+                {
+                    id: 3,
+                    title: "Kaçın Kurası",
+                    artist: "Sezen Aksu",
+                    category: "Pop",
+                    imageUrl: "/api/placeholder/170/170",
+                    audioUrl: "Kaçın Kurası.mp3"
+                },
+                {
+                    id: 4,
+                    title: "Cımbız",
+                    artist: "Serdar Ortaç",
+                    category: "Pop",
+                    imageUrl: "/api/placeholder/170/170",
+                    audioUrl: "Cımbız.mp3"
+                },
+                {
+                    id: 5,
+                    title: "Seviyorsun",
+                    artist: "Hande Yener",
+                    category: "Pop",
+                    imageUrl: "/api/placeholder/170/170",
+                    audioUrl: "Seviyorsun.mp3"
+                },
+                {
+                    id: 6,
+                    title: "Beni Bana Bırak",
+                    artist: "Yasemin Mori",
+                    category: "Elektronik",
+                    imageUrl: "/api/placeholder/170/170",
+                    audioUrl: "Beni Bana Bırak.mp3"
+                },
+                {
+                    id: 7,
+                    title: "Gökyüzünde",
+                    artist: "Zakkum",
+                    category: "Rock",
+                    imageUrl: "/api/placeholder/170/170",
+                    audioUrl: "Gökyüzünde.mp3"
+                },
+                {
+                    id: 8,
+                    title: "Bir Beyaz Orkide",
+                    artist: "Cihan Mürtezaoğlu",
+                    category: "Rock",
+                    imageUrl: "/api/placeholder/170/170",
+                    audioUrl: "Bir Beyaz Orkide.mp3"
+                },
+                {
+                    id: 9,
+                    title: "Dursun Zaman",
+                    artist: "Manga",
+                    category: "Rock",
+                    imageUrl: "/api/placeholder/170/170",
+                    audioUrl: "Dursun Zaman.mp3"
+                },
+                {
+                    id: 10,
+                    title: "Her Şeyi Yak",
+                    artist: "Duman",
+                    category: "Rock",
+                    imageUrl: "/api/placeholder/170/170",
+                    audioUrl: "Her Şeyi Yak.mp3"
+                },
+                {
+                    id: 11,
+                    title: "Benimle Kayboldun",
+                    artist: "Kaan Boşnak",
+                    category: "Elektronik",
+                    imageUrl: "/api/placeholder/170/170",
+                    audioUrl: "Benimle Kayboldun.mp3"
+                },
+                {
+                    id: 12,
+                    title: "Gel",
+                    artist: "Mabel Matiz",
+                    category: "Jazz",
+                    imageUrl: "/api/placeholder/170/170",
+                    audioUrl: "Mabel Matiz - Gel.mp3"
+                },
+                {
+                    id: 13,
+                    title: "Baba",
+                    artist: "Ayaz Erdoğan",
+                    category: "Hip Hop",
+                    imageUrl: "/api/placeholder/170/170",
+                    audioUrl: "Baba.mp3"
+                },
+                {
+                    id: 14,
+                    title: "Unutulacak Dünler",
+                    artist: "Gazapizm",
+                    category: "Hip Hop",
+                    imageUrl: "/api/placeholder/170/170",
+                    audioUrl: "Gazapizm - Unutulacak Dünler.mp3"
+                },
+                {
+                    id: 15,
+                    title: "Suspus",
+                    artist: "Ceza",
+                    category: "Hip Hop",
+                    imageUrl: "/api/placeholder/170/170",
+                    audioUrl: "Ceza - Suspus (Official Music Video).mp3"
+                },
+                {
+                    id: 16,
+                    title: "Escobar",
+                    artist: "Blok3",
+                    category: "Hip Hop",
+                    imageUrl: "/api/placeholder/170/170",
+                    audioUrl: "BLOK3 - ESC_BAR (OFFICIAL VIDEO).mp3"
+                },
+                {
+                    id: 17,
+                    title: "Italy Forma",
+                    artist: "Ati242",
+                    category: "Hip Hop",
+                    imageUrl: "/api/placeholder/170/170",
+                    audioUrl: "Italy Forma.mp3"
+                },
+                {
+                    id: 18,
+                    title: "Güllerim Soldu",
+                    artist: "Bergüzar Korel",
+                    category: "Jazz",
+                    imageUrl: "/api/placeholder/170/170",
+                    audioUrl: "Güllerim Soldu.mp3"
+                },
+                {
+                    id: 19,
+                    title: "Deli Divane",
+                    artist: "Eda Baba",
+                    category: "Jazz",
+                    imageUrl: "/api/placeholder/170/170",
+                    audioUrl: "Deli Divane.mp3"
+                }
             ];
+            
+            // DOM elemanları
+            const musicGrid = document.getElementById('music-grid');
+            const playerImage = document.getElementById('player-image');
+            const playerTitle = document.getElementById('player-title');
+            const playerArtist = document.getElementById('player-artist');
+            const playPauseBtn = document.getElementById('play-pause');
+            const prevBtn = document.getElementById('prev');
+            const nextBtn = document.getElementById('next');
+            const progressContainer = document.getElementById('progress-container');
+            const progress = document.getElementById('progress');
+            const currentTimeEl = document.getElementById('current-time');
+            const durationEl = document.getElementById('duration');
+            const volumeSlider = document.getElementById('volume-slider');
+            const volumePercentage = document.getElementById('volume-percentage');
+            const searchInput = document.getElementById('search-input');
+            const categoryTabs = document.querySelectorAll('.category-tab');
             
             // Audio nesnesi
             const audio = new Audio();
             
-            // Şarkıyı yükle - modified to add error handling
-            function loadSong(song) {
-                try {
-                    playerTitle.textContent = song.title;
-                    playerArtist.textContent = song.artist;
-                    playerImage.src = song.imageUrl;
+            // Değişkenler
+            let currentSongIndex = -1;
+            let isPlaying = false;
+            let currentCategory = 'Pop';
+            let filteredSongs = filterSongsByCategory(currentCategory);
+            
+            // Müzik kartlarını oluştur
+            function renderMusicCards() {
+                musicGrid.innerHTML = '';
+                
+                filteredSongs.forEach((song, index) => {
+                    const card = document.createElement('div');
+                    card.classList.add('music-card');
                     
-                    audio.src = song.audioUrl;
+                    card.innerHTML = `
+                        <img src="${song.imageUrl}" alt="${song.title}" class="music-card-image">
+                        <div class="music-card-content">
+                            <h3>${song.title}</h3>
+                            <p>${song.artist}</p>
+                        </div>
+                    `;
                     
-                    // Add event listeners for debugging
-                    audio.onerror = function(e) {
-                        logDebug(`Audio Error: Cannot load ${song.title}. 
-                            Error Code: ${audio.error.code}
-                            Possible reasons:
-                            1. Incorrect file path
-                            2. CORS issues
-                            3. File does not exist`);
-                    };
-                    
-                    audio.addEventListener('loadedmetadata', function() {
-                        console.log(`Loaded: ${song.title}`);
+                    card.addEventListener('click', () => {
+                        currentSongIndex = index;
+                        loadSong(filteredSongs[currentSongIndex]);
+                        playSong();
                     });
-                } catch (error) {
-                    logDebug(`Exception when loading song: ${error.message}`);
-                }
+                    
+                    musicGrid.appendChild(card);
+                });
             }
-
-            // Rest of the previous JavaScript remains the same
             
-            // Additional debugging for audio loading
-            audio.addEventListener('canplay', () => {
-                console.log('Audio can be played');
+            // Kategoriye göre şarkıları filtrele
+            function filterSongsByCategory(category) {
+                if (category === 'Tümü') {
+                    return songs;
+                }
+                return songs.filter(song => song.category === category);
+            }
+            
+            // Şarkıyı yükle
+            function loadSong(song) {
+                playerTitle.textContent = song.title;
+                playerArtist.textContent = song.artist;
+                playerImage.src = song.imageUrl;
+                audio.src = song.audioUrl;
+            }
+            
+            // Şarkıyı çal
+            function playSong() {
+                isPlaying = true;
+                playPauseBtn.textContent = '⏸';
+                audio.play();
+            }
+            
+            // Şarkıyı duraklat
+            function pauseSong() {
+                isPlaying = false;
+                playPauseBtn.textContent = '▶';
+                audio.pause();
+            }
+            
+            // Önceki şarkı
+            function prevSong() {
+                currentSongIndex--;
+                if (currentSongIndex < 0) {
+                    currentSongIndex = filteredSongs.length - 1;
+                }
+                loadSong(filteredSongs[currentSongIndex]);
+                playSong();
+            }
+            
+            // Sonraki şarkı
+            function nextSong() {
+                currentSongIndex++;
+                if (currentSongIndex > filteredSongs.length - 1) {
+                    currentSongIndex = 0;
+                }
+                loadSong(filteredSongs[currentSongIndex]);
+                playSong();
+            }
+            
+            // Zaman güncelle
+            function updateProgress(e) {
+                const { currentTime, duration } = e.srcElement;
+                // İlerleme çubuğunu güncelle
+                const progressPercent = (currentTime / duration) * 100;
+                progress.style.width = `${progressPercent}%`;
+                
+                // Süreleri güncelle
+                const durationMinutes = Math.floor(duration / 60);
+                let durationSeconds = Math.floor(duration % 60);
+                if (durationSeconds < 10) {
+                    durationSeconds = `0${durationSeconds}`;
+                }
+                
+                // Süreyi göster
+                if (durationSeconds) {
+                    durationEl.textContent = `${durationMinutes}:${durationSeconds}`;
+                }
+                
+                const currentMinutes = Math.floor(currentTime / 60);
+                let currentSeconds = Math.floor(currentTime % 60);
+                if (currentSeconds < 10) {
+                    currentSeconds = `0${currentSeconds}`;
+                }
+                currentTimeEl.textContent = `${currentMinutes}:${currentSeconds}`;
+            }
+            
+            // İlerleme çubuğunda tıklama
+            function setProgress(e) {
+                const width = this.clientWidth;
+                const clickX = e.offsetX;
+                const duration = audio.duration;
+                
+                audio.currentTime = (clickX / width) * duration;
+            }
+            
+            // Ses seviyesi ayarı
+            function setVolume(e) {
+                const width = volumeSlider.clientWidth;
+                const clickX = e.offsetX;
+                const volume = clickX / width;
+                
+                audio.volume = volume;
+                volumePercentage.style.width = `${volume * 100}%`;
+            }
+            
+            // Kategori sekmelerini ayarla
+            function setupCategoryTabs() {
+                categoryTabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        // Aktif sekmeyi değiştir
+                        categoryTabs.forEach(t => t.classList.remove('active'));
+                        tab.classList.add('active');
+                        
+                        // Kategoriyi güncelle ve şarkıları filtrele
+                        currentCategory = tab.textContent;
+                        filteredSongs = filterSongsByCategory(currentCategory);
+                        renderMusicCards();
+                        
+                        // Eğer şarkı çalıyorsa devam etsin
+                        if (currentSongIndex !== -1) {
+                            const currentSongId = filteredSongs[currentSongIndex]?.id;
+                            currentSongIndex = filteredSongs.findIndex(song => song.id === currentSongId);
+                            if (currentSongIndex === -1 && filteredSongs.length > 0) {
+                                currentSongIndex = 0;
+                                loadSong(filteredSongs[currentSongIndex]);
+                                if (isPlaying) {
+                                    playSong();
+                                }
+                            }
+                        }
+                    });
+                });
+            }
+            
+            // Arama fonksiyonu
+            function setupSearch() {
+                searchInput.addEventListener('input', (e) => {
+                    const searchTerm = e.target.value.toLowerCase();
+                    
+                    if (searchTerm.length > 0) {
+                        filteredSongs = songs.filter(song => 
+                            song.title.toLowerCase().includes(searchTerm) || 
+                            song.artist.toLowerCase().includes(searchTerm)
+                        );
+                    } else {
+                        filteredSongs = filterSongsByCategory(currentCategory);
+                    }
+                    
+                    renderMusicCards();
+                });
+            }
+            
+            // Event Listeners
+            playPauseBtn.addEventListener('click', () => {
+                if (currentSongIndex === -1 && filteredSongs.length > 0) {
+                    currentSongIndex = 0;
+                    loadSong(filteredSongs[currentSongIndex]);
+                    playSong();
+                } else {
+                    isPlaying ? pauseSong() : playSong();
+                }
             });
             
-            audio.addEventListener('error', (e) => {
-                logDebug(`Audio Error Event: ${e}`);
-            });
+            prevBtn.addEventListener('click', prevSong);
+            nextBtn.addEventListener('click', nextSong);
+            
+            audio.addEventListener('timeupdate', updateProgress);
+            audio.addEventListener('ended', nextSong);
+            
+            progressContainer.addEventListener('click', setProgress);
+            volumeSlider.addEventListener('click', setVolume);
+            
+            // Kategorileri ve aramayı ayarla
+            setupCategoryTabs();
+            setupSearch();
+            
+            // İlk yükleme
+            renderMusicCards();
         });
+    
+
+
+
     </script>
 </body>
 </html>
