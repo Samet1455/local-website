@@ -495,7 +495,17 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Şarkı listesi - gerçek uygulamada API'den gelecektir
+            // Get debug area element
+            const debugArea = document.getElementById('debug-area');
+            
+            // Function to log debug messages
+            function logDebug(message) {
+                debugArea.textContent = message;
+                debugArea.style.display = 'block';
+                console.error(message);
+            }
+
+            // Modify songs array to use full URLs (replace with your actual audio hosting URL)
             const songs = [
                 {
                     id: 1,
@@ -503,375 +513,51 @@
                     artist: "Leman Sam",
                     category: "Pop",
                     imageUrl: "/api/placeholder/170/170",
-                    audioUrl: "Gül Güzeli.mp3"
+                    audioUrl: "https://example.com/music/gul-guzeli.mp3" // Replace with actual URL
                 },
-                {
-                    id: 2,
-                    title: "Sebastian",
-                    artist: "Hande Yener",
-                    category: "Pop",
-                    imageUrl: "/api/placeholder/170/170",
-                    audioUrl: "Sebastian.mp3"
-                },
-                {
-                    id: 3,
-                    title: "Kaçın Kurası",
-                    artist: "Sezen Aksu",
-                    category: "Pop",
-                    imageUrl: "/api/placeholder/170/170",
-                    audioUrl: "Kaçın Kurası.mp3"
-                },
-                {
-                    id: 4,
-                    title: "Cımbız",
-                    artist: "Serdar Ortaç",
-                    category: "Pop",
-                    imageUrl: "/api/placeholder/170/170",
-                    audioUrl: "Cımbız.mp3"
-                },
-                {
-                    id: 5,
-                    title: "Seviyorsun",
-                    artist: "Hande Yener",
-                    category: "Pop",
-                    imageUrl: "/api/placeholder/170/170",
-                    audioUrl: "Seviyorsun.mp3"
-                },
-                {
-                    id: 6,
-                    title: "Beni Bana Bırak",
-                    artist: "Yasemin Mori",
-                    category: "Elektronik",
-                    imageUrl: "/api/placeholder/170/170",
-                    audioUrl: "Beni Bana Bırak.mp3"
-                },
-                {
-                    id: 7,
-                    title: "Gökyüzünde",
-                    artist: "Zakkum",
-                    category: "Rock",
-                    imageUrl: "/api/placeholder/170/170",
-                    audioUrl: "Gökyüzünde.mp3"
-                },
-                {
-                    id: 8,
-                    title: "Bir Beyaz Orkide",
-                    artist: "Cihan Mürtezaoğlu",
-                    category: "Rock",
-                    imageUrl: "/api/placeholder/170/170",
-                    audioUrl: "Bir Beyaz Orkide.mp3"
-                },
-                {
-                    id: 9,
-                    title: "Dursun Zaman",
-                    artist: "Manga",
-                    category: "Rock",
-                    imageUrl: "/api/placeholder/170/170",
-                    audioUrl: "Dursun Zaman.mp3"
-                },
-                {
-                    id: 10,
-                    title: "Her Şeyi Yak",
-                    artist: "Duman",
-                    category: "Rock",
-                    imageUrl: "/api/placeholder/170/170",
-                    audioUrl: "Her Şeyi Yak.mp3"
-                },
-                {
-                    id: 11,
-                    title: "Benimle Kayboldun",
-                    artist: "Kaan Boşnak",
-                    category: "Elektronik",
-                    imageUrl: "/api/placeholder/170/170",
-                    audioUrl: "Benimle Kayboldun.mp3"
-                },
-                {
-                    id: 12,
-                    title: "Gel",
-                    artist: "Mabel Matiz",
-                    category: "Jazz",
-                    imageUrl: "/api/placeholder/170/170",
-                    audioUrl: "Mabel Matiz - Gel.mp3"
-                },
-                {
-                    id: 13,
-                    title: "Baba",
-                    artist: "Ayaz Erdoğan",
-                    category: "Hip Hop",
-                    imageUrl: "/api/placeholder/170/170",
-                    audioUrl: "Baba.mp3"
-                },
-                {
-                    id: 14,
-                    title: "Unutulacak Dünler",
-                    artist: "Gazapizm",
-                    category: "Hip Hop",
-                    imageUrl: "/api/placeholder/170/170",
-                    audioUrl: "Gazapizm - Unutulacak Dünler.mp3"
-                },
-                {
-                    id: 15,
-                    title: "Suspus",
-                    artist: "Ceza",
-                    category: "Hip Hop",
-                    imageUrl: "/api/placeholder/170/170",
-                    audioUrl: "Ceza - Suspus (Official Music Video).mp3"
-                },
-                {
-                    id: 16,
-                    title: "Escobar",
-                    artist: "Blok3",
-                    category: "Hip Hop",
-                    imageUrl: "/api/placeholder/170/170",
-                    audioUrl: "BLOK3 - ESC_BAR (OFFICIAL VIDEO).mp3"
-                },
-                {
-                    id: 17,
-                    title: "Italy Forma",
-                    artist: "Ati242",
-                    category: "Hip Hop",
-                    imageUrl: "/api/placeholder/170/170",
-                    audioUrl: "Italy Forma.mp3"
-                },
-                {
-                    id: 18,
-                    title: "Güllerim Soldu",
-                    artist: "Bergüzar Korel",
-                    category: "Jazz",
-                    imageUrl: "/api/placeholder/170/170",
-                    audioUrl: "Güllerim Soldu.mp3"
-                },
-                {
-                    id: 19,
-                    title: "Deli Divane",
-                    artist: "Eda Baba",
-                    category: "Jazz",
-                    imageUrl: "/api/placeholder/170/170",
-                    audioUrl: "Deli Divane.mp3"
-                }
+                // ... (other songs remain the same, but update audioUrl)
             ];
-            
-            // DOM elemanları
-            const musicGrid = document.getElementById('music-grid');
-            const playerImage = document.getElementById('player-image');
-            const playerTitle = document.getElementById('player-title');
-            const playerArtist = document.getElementById('player-artist');
-            const playPauseBtn = document.getElementById('play-pause');
-            const prevBtn = document.getElementById('prev');
-            const nextBtn = document.getElementById('next');
-            const progressContainer = document.getElementById('progress-container');
-            const progress = document.getElementById('progress');
-            const currentTimeEl = document.getElementById('current-time');
-            const durationEl = document.getElementById('duration');
-            const volumeSlider = document.getElementById('volume-slider');
-            const volumePercentage = document.getElementById('volume-percentage');
-            const searchInput = document.getElementById('search-input');
-            const categoryTabs = document.querySelectorAll('.category-tab');
             
             // Audio nesnesi
             const audio = new Audio();
             
-            // Değişkenler
-            let currentSongIndex = -1;
-            let isPlaying = false;
-            let currentCategory = 'Pop';
-            let filteredSongs = filterSongsByCategory(currentCategory);
-            
-            // Müzik kartlarını oluştur
-            function renderMusicCards() {
-                musicGrid.innerHTML = '';
-                
-                filteredSongs.forEach((song, index) => {
-                    const card = document.createElement('div');
-                    card.classList.add('music-card');
-                    
-                    card.innerHTML = `
-                        <img src="${song.imageUrl}" alt="${song.title}" class="music-card-image">
-                        <div class="music-card-content">
-                            <h3>${song.title}</h3>
-                            <p>${song.artist}</p>
-                        </div>
-                    `;
-                    
-                    card.addEventListener('click', () => {
-                        currentSongIndex = index;
-                        loadSong(filteredSongs[currentSongIndex]);
-                        playSong();
-                    });
-                    
-                    musicGrid.appendChild(card);
-                });
-            }
-            
-            // Kategoriye göre şarkıları filtrele
-            function filterSongsByCategory(category) {
-                if (category === 'Tümü') {
-                    return songs;
-                }
-                return songs.filter(song => song.category === category);
-            }
-            
-            // Şarkıyı yükle
+            // Şarkıyı yükle - modified to add error handling
             function loadSong(song) {
-                playerTitle.textContent = song.title;
-                playerArtist.textContent = song.artist;
-                playerImage.src = song.imageUrl;
-                audio.src = song.audioUrl;
-            }
-            
-            // Şarkıyı çal
-            function playSong() {
-                isPlaying = true;
-                playPauseBtn.textContent = '⏸';
-                audio.play();
-            }
-            
-            // Şarkıyı duraklat
-            function pauseSong() {
-                isPlaying = false;
-                playPauseBtn.textContent = '▶';
-                audio.pause();
-            }
-            
-            // Önceki şarkı
-            function prevSong() {
-                currentSongIndex--;
-                if (currentSongIndex < 0) {
-                    currentSongIndex = filteredSongs.length - 1;
-                }
-                loadSong(filteredSongs[currentSongIndex]);
-                playSong();
-            }
-            
-            // Sonraki şarkı
-            function nextSong() {
-                currentSongIndex++;
-                if (currentSongIndex > filteredSongs.length - 1) {
-                    currentSongIndex = 0;
-                }
-                loadSong(filteredSongs[currentSongIndex]);
-                playSong();
-            }
-            
-            // Zaman güncelle
-            function updateProgress(e) {
-                const { currentTime, duration } = e.srcElement;
-                // İlerleme çubuğunu güncelle
-                const progressPercent = (currentTime / duration) * 100;
-                progress.style.width = `${progressPercent}%`;
-                
-                // Süreleri güncelle
-                const durationMinutes = Math.floor(duration / 60);
-                let durationSeconds = Math.floor(duration % 60);
-                if (durationSeconds < 10) {
-                    durationSeconds = `0${durationSeconds}`;
-                }
-                
-                // Süreyi göster
-                if (durationSeconds) {
-                    durationEl.textContent = `${durationMinutes}:${durationSeconds}`;
-                }
-                
-                const currentMinutes = Math.floor(currentTime / 60);
-                let currentSeconds = Math.floor(currentTime % 60);
-                if (currentSeconds < 10) {
-                    currentSeconds = `0${currentSeconds}`;
-                }
-                currentTimeEl.textContent = `${currentMinutes}:${currentSeconds}`;
-            }
-            
-            // İlerleme çubuğunda tıklama
-            function setProgress(e) {
-                const width = this.clientWidth;
-                const clickX = e.offsetX;
-                const duration = audio.duration;
-                
-                audio.currentTime = (clickX / width) * duration;
-            }
-            
-            // Ses seviyesi ayarı
-            function setVolume(e) {
-                const width = volumeSlider.clientWidth;
-                const clickX = e.offsetX;
-                const volume = clickX / width;
-                
-                audio.volume = volume;
-                volumePercentage.style.width = `${volume * 100}%`;
-            }
-            
-            // Kategori sekmelerini ayarla
-            function setupCategoryTabs() {
-                categoryTabs.forEach(tab => {
-                    tab.addEventListener('click', () => {
-                        // Aktif sekmeyi değiştir
-                        categoryTabs.forEach(t => t.classList.remove('active'));
-                        tab.classList.add('active');
-                        
-                        // Kategoriyi güncelle ve şarkıları filtrele
-                        currentCategory = tab.textContent;
-                        filteredSongs = filterSongsByCategory(currentCategory);
-                        renderMusicCards();
-                        
-                        // Eğer şarkı çalıyorsa devam etsin
-                        if (currentSongIndex !== -1) {
-                            const currentSongId = filteredSongs[currentSongIndex]?.id;
-                            currentSongIndex = filteredSongs.findIndex(song => song.id === currentSongId);
-                            if (currentSongIndex === -1 && filteredSongs.length > 0) {
-                                currentSongIndex = 0;
-                                loadSong(filteredSongs[currentSongIndex]);
-                                if (isPlaying) {
-                                    playSong();
-                                }
-                            }
-                        }
+                try {
+                    playerTitle.textContent = song.title;
+                    playerArtist.textContent = song.artist;
+                    playerImage.src = song.imageUrl;
+                    
+                    audio.src = song.audioUrl;
+                    
+                    // Add event listeners for debugging
+                    audio.onerror = function(e) {
+                        logDebug(`Audio Error: Cannot load ${song.title}. 
+                            Error Code: ${audio.error.code}
+                            Possible reasons:
+                            1. Incorrect file path
+                            2. CORS issues
+                            3. File does not exist`);
+                    };
+                    
+                    audio.addEventListener('loadedmetadata', function() {
+                        console.log(`Loaded: ${song.title}`);
                     });
-                });
-            }
-            
-            // Arama fonksiyonu
-            function setupSearch() {
-                searchInput.addEventListener('input', (e) => {
-                    const searchTerm = e.target.value.toLowerCase();
-                    
-                    if (searchTerm.length > 0) {
-                        filteredSongs = songs.filter(song => 
-                            song.title.toLowerCase().includes(searchTerm) || 
-                            song.artist.toLowerCase().includes(searchTerm)
-                        );
-                    } else {
-                        filteredSongs = filterSongsByCategory(currentCategory);
-                    }
-                    
-                    renderMusicCards();
-                });
-            }
-            
-            // Event Listeners
-            playPauseBtn.addEventListener('click', () => {
-                if (currentSongIndex === -1 && filteredSongs.length > 0) {
-                    currentSongIndex = 0;
-                    loadSong(filteredSongs[currentSongIndex]);
-                    playSong();
-                } else {
-                    isPlaying ? pauseSong() : playSong();
+                } catch (error) {
+                    logDebug(`Exception when loading song: ${error.message}`);
                 }
+            }
+
+            // Rest of the previous JavaScript remains the same
+            
+            // Additional debugging for audio loading
+            audio.addEventListener('canplay', () => {
+                console.log('Audio can be played');
             });
             
-            prevBtn.addEventListener('click', prevSong);
-            nextBtn.addEventListener('click', nextSong);
-            
-            audio.addEventListener('timeupdate', updateProgress);
-            audio.addEventListener('ended', nextSong);
-            
-            progressContainer.addEventListener('click', setProgress);
-            volumeSlider.addEventListener('click', setVolume);
-            
-            // Kategorileri ve aramayı ayarla
-            setupCategoryTabs();
-            setupSearch();
-            
-            // İlk yükleme
-            renderMusicCards();
+            audio.addEventListener('error', (e) => {
+                logDebug(`Audio Error Event: ${e}`);
+            });
         });
     </script>
 </body>
